@@ -1,14 +1,9 @@
 <template lang="pug">
   #app
-    h1 {{ msg }}
-    p {{ person.name }}
-    p(v-show="showValue") {{ value }}
-    p(v-if="showValue") {{ value }}
-    p(v-else-if="true") {{ 'algo mas' }}
-    p(v-else) {{ 'lo ultimo' }}
+    input(v-model="name")
+    p {{ name }}
 
-    ul
-      li(v-for="item in items") {{ item }}
+    a(v-bind:href="url") Link
 </template>
 
 <script>
@@ -16,13 +11,8 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: 'Hola Vue!',
-      person: {
-        name: 'William'
-      },
-      showValue: true,
-      value: 'Algo',
-      items: [1, 2, 3, 4, 5]
+      name: '',
+      url: 'https://platzi.com'
     }
   }
 }
