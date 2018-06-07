@@ -40,6 +40,12 @@ export default {
       var ageDt = new Date(diffMs)
       return Math.abs(ageDt.getUTCFullYear() - 1970)
     }
+  },
+
+  watch: {
+    name (newVal, oldVal) {
+      console.log(newVal, oldVal)
+    }
   }
 }
 </script>
