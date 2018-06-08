@@ -1,4 +1,4 @@
-import platziMusicService from './platziMusicService'
+import platziMusicService from './platzi-music'
 
 const trackService = {}
 

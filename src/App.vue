@@ -1,85 +1,68 @@
 <template lang="pug">
   #app
-    label(for="title") Titulo Tarea
-    input(
-      type="text",
-      name="title",
-      id="title",
-      placeholder="Titulo",
-      v-model="newTask.title"
-      )
-    label(for="time") Hora Tarea
-    input(
-      type="number",
-      name="time",
-      id="time",
-      placeholder="Hora",
-      v-model="newTask.time"
-      )
-    button(@click="addTask") Agregar tarea
-    button(@click="cancel") Cancelar
-    p {{ name }}
-    p Total de Horas Trabajadas {{ totalTime }}
-    div(v-show="!tasks.length")
-      p No hay tareas
-    div(v-show="tasks.length")
-      ul
-        li(v-for="(task, index) in tasks") {{ task.title }} - {{ task.time }}
-          button(@click="removeTask(index)") &times
+    pm-header
+    section.section
+      nav.nav.has-shadow
+        .container
+          .field.has-addons
+            .control
+              input.input.is-large(
+              type="text",
+              placeholder="Buscar canciones",
+              v-model="searchQuery"
+              )
+            .control
+              a.button.is-info.is-large(@click="search") Buscar
+              a.button.is-danger.is-large &times;
+      .container
+        p
+          small {{ searchMessage }}
 
+      .container.results
+        .columns
+          .column(v-for="t in tracks")
+            | {{ t.name }} - {{ t.artists[0].name}}
+    pm-footer
 </template>
 
 <script>
+import trackService from './services/track'
+import PmHeader from './components/layout/Header.vue'
+import PmFooter from './components/layout/Footer.vue'
+
 export default {
   name: 'app',
-
   data () {
     return {
-      name: 'TAREAS',
-      tasks: [],
-      newTask: { title: '', time: 0 }
+      searchQuery: '',
+      tracks: []
     }
   },
 
-  created () {
-    this.tasks = JSON.parse(window.localStorage.getItem('tasks')) || []
+  components: {
+    PmFooter,
+    PmHeader
   },
 
   computed: {
-    totalTime () {
-      let total = 0
-      this.tasks.forEach(elem => {
-        total += parseInt(elem.time)
-      })
-      return total
+    searchMessage () {
+      return `Encontrados. ${this.tracks.length}`
     }
   },
-
   methods: {
-    addTask () {
-      if (this.newTask.title !== '' && this.newTask.time !== 0) {
-        this.tasks.push({
-          title: this.newTask.title,
-          time: this.newTask.time
-        })
-        window.localStorage.setItem('tasks', JSON.stringify(this.tasks))
-        this.newTask.title = ''
-        this.newTask.time = 0
-      }
-    },
-    cancel () {
-      this.newTask.title = ''
-      this.newTask.time = 0
-    },
-    removeTask (index) {
-      this.tasks.splice(index, 1)
-      window.localStorage.setItem('tasks', JSON.stringify(this.tasks))
+    search () {
+      if (!this.searchQuery) { return }
+      trackService.search(this.searchQuery).then(res => {
+        this.tracks = res.tracks.items
+      })
     }
   }
-
 }
 </script>
 
 <style lang="scss">
  @import './scss/main.scss';
+ .results {
+   margin-top: 50px;
+ }
 </style>
