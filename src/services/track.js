@@ -7,7 +7,8 @@ trackService.search = function (q) {
 
   return platziMusicService.get('/search', {
     params: { q, type }
-  }).then(res => res.data)
+  })
+    .then(res => res.data)
 }
 
 export default trackService
