@@ -41,7 +41,7 @@ import PmLoader from '@/components/shared/Loader.vue'
 import PmNotification from '@/components/shared/Notification.vue'
 
 export default {
-  name: 'app',
+  name: 'search',
 
   components: { PmTrack, PmLoader, PmNotification },
 
